@@ -1,6 +1,40 @@
 #include <stdio.h>
 #include <string.h>
 
+//Display bed status
+char specialtyNames[4][30] = {"General Practice (OPD)", "Paediatrics", "Cardiology", "Neurology"};
+float baseFees[4] = {1500.00, 2500.00, 4500.00, 5000.00};
+
+char wardNames[4][20] = {"General Ward", "Paediatric Ward", "Surgical Ward", "ICU"};
+float wardRates[4] = {3000.00, 6000.00, 12000.00, 25000.00};
+int wardCapacities[4] = {20, 10, 10, 5};
+
+int bedOccupancy[4][20] = {0};
+
+void displayBedStatus()
+{
+    int i, j;
+    printf("\n=== BED OCCUPANCY STATUS ===\n");
+
+    for (i = 0; i < 4; i++)
+    {
+        printf("\n%s (Capacity: %d)\n", wardNames[i], wardCapacities[i]);
+        printf("Beds: ");
+
+        for (j = 0; j < wardCapacities[i]; j++)
+        {
+            if (bedOccupancy[i][j] == 0)
+            {
+                printf("[0] ");
+            }
+            else
+            {
+                printf("[1] ");
+            }
+        }
+        printf("\n");
+    }
+}
 void displayMenu()
 {
     printf("\n===== SMART HOSPITAL SYSTEM =====\n");
@@ -34,7 +68,7 @@ int main()
                 break;
 
             case 3:
-                printf("Bed Status\n");
+                displayBedStatus();
                 break;
 
             case 4:
