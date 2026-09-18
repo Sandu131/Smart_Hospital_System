@@ -1,6 +1,28 @@
 #include <stdio.h>
 #include <string.h>
 
+// Basic Patient Details
+void registerPatient()
+{
+    char name[50];
+    int age, urgency;
+
+    while (getchar() != '\n');
+
+    printf("\n=== PATIENT REGISTRATION ===\n");
+
+    printf("Enter Patient Name: ");
+    scanf(" %s", name);
+
+    printf("Enter Age: ");
+    scanf("%d", &age);
+
+    printf("Select Urgency Level (1 = Normal, 2 = Urgent, 3 = Critical): ");
+    scanf("%d", &urgency);
+
+    printf("\nPatient %s (%d yrs) registered with Urgency Level %d.\n", name, age, urgency);
+}
+
 //Display bed status
 char specialtyNames[4][30] = {"General Practice (OPD)", "Paediatrics", "Cardiology", "Neurology"};
 float baseFees[4] = {1500.00, 2500.00, 4500.00, 5000.00};
@@ -60,7 +82,7 @@ int main()
         switch(choice)
         {
             case 1:
-                printf("Register Patient\n");
+                registerPatient();
                 break;
 
             case 2:
