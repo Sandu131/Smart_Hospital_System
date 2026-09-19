@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char specialtyNames[4][30] = {"General Practice (OPD)", "Paediatrics", "Cardiology", "Neurology"};
+char specialtyNames[4][30] = {"OPD", "Paediatrics", "Cardiology", "Neurology"};
 float baseFees[4] = {1500.00, 2500.00, 4500.00, 5000.00};
 
 char wardNames[4][20] = {"General Ward", "Paediatric Ward", "Surgical Ward", "ICU"};
@@ -10,76 +10,86 @@ int wardCapacities[4] = {20, 10, 10, 5};
 
 int bedOccupancy[4][20] = {0};
 
-typedef struct {
-    int id;
-    char name[50];
-    int age;
-    int urgency;
-    float totalFee;
-} Patient;
+int patient_id[100];
+char patient_name[100][50];
+int patient_age[100];
+int patient_urgency[100];
+float patient_fee[100];
 
-Patient patients[100];
 int patientCount = 0;
 
-// Basic Patient Details with speciality selection
+//Register Patient Function
 void registerPatient()
 {
-    char name[50];
-    int age, urgency, specChoice;
+    int specChoice;
     float baseFee, surcharge = 0.0;
 
     while (getchar() != '\n'); // Clear buffer
 
     printf("\n=== PATIENT REGISTRATION ===\n");
+
+    patient_id[patientCount] = patientCount + 1;
+
     printf("Enter Name: ");
-    scanf("%[^\n]", name);
+    scanf("%s", patient_name[patientCount]);
 
     printf("Enter Age: ");
-    scanf("%d", &age);
+    scanf("%d", &patient_age[patientCount]);
 
     printf("Urgency Level (1-Normal, 2-Urgent, 3-Critical): ");
-    scanf("%d", &urgency);
+    scanf("%d", &patient_urgency[patientCount]);
 
     printf("Select Specialty (1-OPD, 2-Paediatrics, 3-Cardiology, 4-Neurology): ");
     scanf("%d", &specChoice);
 
-    while (specChoice < 1 || specChoice > 4) {
+    while (specChoice < 1 || specChoice > 4)
+    {
         printf("Invalid choice! Enter (1-4): ");
         scanf("%d", &specChoice);
     }
 
     baseFee = baseFees[specChoice - 1];
 
-    if (urgency == 2) surcharge = baseFee * 0.20;
-    if (urgency == 3) surcharge = baseFee * 0.50;
+    if (patient_urgency[patientCount] == 2) surcharge = baseFee * 0.20;
+    if (patient_urgency[patientCount] == 3) surcharge = baseFee * 0.50;
 
-    patients[patientCount].id = patientCount + 1;
-    patients[patientCount].age = age;
-    patients[patientCount].urgency = urgency;
-    patients[patientCount].totalFee = baseFee + surcharge;
+    patient_fee[patientCount] = baseFee + surcharge;
 
-
-    int i = 0;
-    while (name[i] != '\0')
-    {
-        patients[patientCount].name[i] = name[i];
-        i++;
-    }
-    patients[patientCount].name[i] = '\0';
-
-    // Summary
     printf("\n--- REGISTRATION SUMMARY ---\n");
-    printf("Patient ID : %d\n", patients[patientCount].id);
-    printf("Name       : %s (%d yrs)\n", name, age);
+    printf("Patient ID : %d\n", patient_id[patientCount]);
+    printf("Name       : %s (%d yrs)\n", patient_name[patientCount], patient_age[patientCount]);
     printf("Specialty  : %s\n", specialtyNames[specChoice - 1]);
     printf("Base Fee   : LKR %.2f\n", baseFee);
     printf("Surcharge  : LKR %.2f\n", surcharge);
-    printf("Total Fee  : LKR %.2f\n", patients[patientCount].totalFee);
+    printf("Total Fee  : LKR %.2f\n", patient_fee[patientCount]);
     printf("----------------------------\n");
 
     patientCount++;
 }
 
+//Display Registered Patients Function
+void displayPatients()
+{
+    int i;
+
+    if (patientCount == 0)
+    {
+        printf("\nNo patients registered yet!\n");
+        return;
+    }
+
+    printf("\n=== REGISTERED PATIENTS ===\n");
+
+    for (i = 0; i < patientCount; i++)
+    {
+        printf("\nPatient ID : %d\n", patient_id[i]);
+        printf("Name       : %s\n", patient_name[i]);
+        printf("Age        : %d\n", patient_age[i]);
+        printf("Urgency    : %d\n", patient_urgency[i]);
+        printf("Total Fee  : LKR %.2f\n", patient_fee[i]);
+        printf("---------------------------\n");
+    }
+}
 //Display bed status
 void displayBedStatus()
 {
@@ -134,7 +144,7 @@ int main()
                 break;
 
             case 2:
-                printf("Display Patients\n");
+                displayPatients();
                 break;
 
             case 3:
