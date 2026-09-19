@@ -1,29 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// Basic Patient Details
-void registerPatient()
-{
-    char name[50];
-    int age, urgency;
-
-    while (getchar() != '\n');
-
-    printf("\n=== PATIENT REGISTRATION ===\n");
-
-    printf("Enter Patient Name: ");
-    scanf(" %s", name);
-
-    printf("Enter Age: ");
-    scanf("%d", &age);
-
-    printf("Select Urgency Level (1 = Normal, 2 = Urgent, 3 = Critical): ");
-    scanf("%d", &urgency);
-
-    printf("\nPatient %s (%d yrs) registered with Urgency Level %d.\n", name, age, urgency);
-}
-
-//Display bed status
 char specialtyNames[4][30] = {"General Practice (OPD)", "Paediatrics", "Cardiology", "Neurology"};
 float baseFees[4] = {1500.00, 2500.00, 4500.00, 5000.00};
 
@@ -33,6 +10,37 @@ int wardCapacities[4] = {20, 10, 10, 5};
 
 int bedOccupancy[4][20] = {0};
 
+// Basic Patient Details with speciality selection
+void registerPatient()
+{
+    char name[50];
+    int age, urgency, specChoice;
+    float baseFee;
+
+    while (getchar() != '\n');
+
+    printf("\n=== PATIENT REGISTRATION ===\n");
+
+    printf("Enter Patient Name: ");
+    scanf("%s", name);
+
+    printf("Enter Age: ");
+    scanf("%d", &age);
+
+    printf("Select Urgency Level (1 = Normal, 2 = Urgent, 3 = Critical): ");
+    scanf("%d", &urgency);
+
+    printf("\nSelect Specialty:\n");
+    printf("1. OPD (LKR 1500)\n2. Paediatrics (LKR 2500)\n3. Cardiology (LKR 4500)\n4. Neurology (LKR 5000)\n");
+    printf("Enter Choice (1-4): ");
+    scanf("%d", &specChoice);
+
+    baseFee = baseFees[specChoice - 1];
+
+    printf("\nPatient %s (%d yrs) registered for %s. Base Fee: LKR %.2f\n",name, age, specialtyNames[specChoice - 1], baseFee);
+}
+
+//Display bed status
 void displayBedStatus()
 {
     int i, j;
