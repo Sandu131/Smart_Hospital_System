@@ -31,7 +31,7 @@ void registerPatient()
     patient_id[patientCount] = patientCount + 1;
 
     printf("Enter Name: ");
-    scanf("%s", patient_name[patientCount]);
+    scanf("%[^\n]", patient_name[patientCount]);
 
     printf("Enter Age: ");
     scanf("%d", &patient_age[patientCount]);
@@ -138,6 +138,30 @@ void assignWard()
            patient_name[pId - 1], wardNames[wardChoice - 1], bedNum);
 }
 
+// Priority Queue
+void showPriorityQueue()
+{
+    int i, j;
+
+    if (patientCount == 0)
+    {
+        printf("\nNo patients in queue.\n");
+        return;
+    }
+
+    printf("\n--- PRIORITY QUEUE (Urgent Patients First) ---\n");
+
+    for (j = 3; j >= 1; j--) {
+        for (i = 0; i < patientCount; i++) {
+            if (patient_urgency[i] == j) {
+                printf("Priority Level %d | ID: %d | Name: %s | Age: %d\n",
+                       patient_urgency[i], patient_id[i], patient_name[i], patient_age[i]);
+            }
+        }
+    }
+    printf("----------------------------------------------\n");
+}
+
 void displayMenu()
 {
     printf("\n===== SMART HOSPITAL SYSTEM =====\n");
@@ -180,7 +204,7 @@ int main()
                 break;
 
             case 5:
-                printf("Priority Queue\n");
+                showPriorityQueue();
                 break;
 
             case 6:
