@@ -15,14 +15,13 @@ void registerPatient()
 {
     char name[50];
     int age, urgency, specChoice;
-    float baseFee;
+    float baseFee, surcharge = 0.0;
 
     while (getchar() != '\n');
 
     printf("\n=== PATIENT REGISTRATION ===\n");
-
     printf("Enter Patient Name: ");
-    scanf("%s", name);
+    scanf("%[^\n]", name);
 
     printf("Enter Age: ");
     scanf("%d", &age);
@@ -30,14 +29,35 @@ void registerPatient()
     printf("Select Urgency Level (1 = Normal, 2 = Urgent, 3 = Critical): ");
     scanf("%d", &urgency);
 
-    printf("\nSelect Specialty:\n");
-    printf("1. OPD (LKR 1500)\n2. Paediatrics (LKR 2500)\n3. Cardiology (LKR 4500)\n4. Neurology (LKR 5000)\n");
-    printf("Enter Choice (1-4): ");
+    while (urgency < 1 || urgency > 3)
+    {
+        printf("Invalid choice! Enter (1-3): ");
+        scanf("%d", &urgency);
+    }
+
+    printf("\nSelect Specialty (1-OPD, 2-Paediatrics, 3-Cardiology, 4-Neurology): ");
     scanf("%d", &specChoice);
+
+    while (specChoice < 1 || specChoice > 4)
+    {
+        printf("Invalid choice! Enter (1-4): ");
+        scanf("%d", &specChoice);
+    }
 
     baseFee = baseFees[specChoice - 1];
 
-    printf("\nPatient %s (%d yrs) registered for %s. Base Fee: LKR %.2f\n",name, age, specialtyNames[specChoice - 1], baseFee);
+    //Surcharge Logic
+    if (urgency == 2)
+        surcharge = baseFee * 0.20;
+    if (urgency == 3)
+        surcharge = baseFee * 0.50;
+
+    printf("\n--- REGISTRATION SUMMARY ---\n");
+    printf("Patient: %s (%d yrs)\n", name, age);
+    printf("Specialty: %s\n", specialtyNames[specChoice - 1]);
+    printf("Base Fee: LKR %.2f\n", baseFee);
+    printf("Surcharge: LKR %.2f\n", surcharge);
+    printf("Total Fee: LKR %.2f\n", baseFee + surcharge);
 }
 
 //Display bed status
