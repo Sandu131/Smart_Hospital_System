@@ -21,10 +21,10 @@ int patientCount = 0;
 //Register Patient Function
 void registerPatient()
 {
-    int specChoice;
-    float baseFee, surcharge = 0.0;
+    int specChoice, isAdmitted = 0, wardChoice = 0, days = 0;
+    float baseFee, surcharge = 0.0, wardCost = 0.0, grossTotal, discount = 0.0, finalPayable;
 
-    while (getchar() != '\n'); // Clear buffer
+    while (getchar() != '\n');
 
     printf("\n=== PATIENT REGISTRATION ===\n");
 
@@ -53,15 +53,37 @@ void registerPatient()
     if (patient_urgency[patientCount] == 2) surcharge = baseFee * 0.20;
     if (patient_urgency[patientCount] == 3) surcharge = baseFee * 0.50;
 
-    patient_fee[patientCount] = baseFee + surcharge;
+    printf("Admitted to Ward? (1=Yes, 0=No): ");
+    scanf("%d", &isAdmitted);
+
+    if (isAdmitted == 1) {
+        printf("Select Ward (1-General, 2-Paediatric, 3-Surgical, 4-ICU): ");
+        scanf("%d", &wardChoice);
+        printf("Enter Days Admitted: ");
+        scanf("%d", &days);
+
+        wardCost = days * wardRates[wardChoice - 1];
+    }
+
+    grossTotal = baseFee + surcharge + wardCost;
+
+    if (patient_age[patientCount] < 5 || patient_age[patientCount] > 65)
+    {
+        discount = grossTotal * 0.15;
+    }
+
+    finalPayable = grossTotal - discount;
+    patient_fee[patientCount] = finalPayable;
 
     printf("\n--- REGISTRATION SUMMARY ---\n");
-    printf("Patient ID : %d\n", patient_id[patientCount]);
-    printf("Name       : %s (%d yrs)\n", patient_name[patientCount], patient_age[patientCount]);
-    printf("Specialty  : %s\n", specialtyNames[specChoice - 1]);
-    printf("Base Fee   : LKR %.2f\n", baseFee);
-    printf("Surcharge  : LKR %.2f\n", surcharge);
-    printf("Total Fee  : LKR %.2f\n", patient_fee[patientCount]);
+    printf("Patient ID  : PAT-%d\n", patient_id[patientCount] + 1000);
+    printf("Name        : %s (%d yrs)\n", patient_name[patientCount], patient_age[patientCount]);
+    printf("Base Fee    : LKR %.2f\n", baseFee);
+    printf("Surcharge   : LKR %.2f\n", surcharge);
+    printf("Ward Cost   : LKR %.2f\n", wardCost);
+    printf("Gross Total : LKR %.2f\n", grossTotal);
+    printf("Discount    : LKR -%.2f\n", discount);
+    printf("Final Bill  : LKR %.2f\n", finalPayable);
     printf("----------------------------\n");
 
     patientCount++;
