@@ -10,6 +10,17 @@ int wardCapacities[4] = {20, 10, 10, 5};
 
 int bedOccupancy[4][20] = {0};
 
+typedef struct {
+    int id;
+    char name[50];
+    int age;
+    int urgency;
+    float totalFee;
+} Patient;
+
+Patient patients[100];
+int patientCount = 0;
+
 // Basic Patient Details with speciality selection
 void registerPatient()
 {
@@ -17,54 +28,63 @@ void registerPatient()
     int age, urgency, specChoice;
     float baseFee, surcharge = 0.0;
 
-    while (getchar() != '\n');
+    while (getchar() != '\n'); // Clear buffer
 
     printf("\n=== PATIENT REGISTRATION ===\n");
-    printf("Enter Patient Name: ");
+    printf("Enter Name: ");
     scanf("%[^\n]", name);
 
     printf("Enter Age: ");
     scanf("%d", &age);
 
-    printf("Select Urgency Level (1 = Normal, 2 = Urgent, 3 = Critical): ");
+    printf("Urgency Level (1-Normal, 2-Urgent, 3-Critical): ");
     scanf("%d", &urgency);
 
-    while (urgency < 1 || urgency > 3)
-    {
-        printf("Invalid choice! Enter (1-3): ");
-        scanf("%d", &urgency);
-    }
-
-    printf("\nSelect Specialty (1-OPD, 2-Paediatrics, 3-Cardiology, 4-Neurology): ");
+    printf("Select Specialty (1-OPD, 2-Paediatrics, 3-Cardiology, 4-Neurology): ");
     scanf("%d", &specChoice);
 
-    while (specChoice < 1 || specChoice > 4)
-    {
+    while (specChoice < 1 || specChoice > 4) {
         printf("Invalid choice! Enter (1-4): ");
         scanf("%d", &specChoice);
     }
 
     baseFee = baseFees[specChoice - 1];
 
-    //Surcharge Logic
-    if (urgency == 2)
-        surcharge = baseFee * 0.20;
-    if (urgency == 3)
-        surcharge = baseFee * 0.50;
+    if (urgency == 2) surcharge = baseFee * 0.20;
+    if (urgency == 3) surcharge = baseFee * 0.50;
 
+    patients[patientCount].id = patientCount + 1;
+    patients[patientCount].age = age;
+    patients[patientCount].urgency = urgency;
+    patients[patientCount].totalFee = baseFee + surcharge;
+
+
+    int i = 0;
+    while (name[i] != '\0')
+    {
+        patients[patientCount].name[i] = name[i];
+        i++;
+    }
+    patients[patientCount].name[i] = '\0';
+
+    // Summary
     printf("\n--- REGISTRATION SUMMARY ---\n");
-    printf("Patient: %s (%d yrs)\n", name, age);
-    printf("Specialty: %s\n", specialtyNames[specChoice - 1]);
-    printf("Base Fee: LKR %.2f\n", baseFee);
-    printf("Surcharge: LKR %.2f\n", surcharge);
-    printf("Total Fee: LKR %.2f\n", baseFee + surcharge);
+    printf("Patient ID : %d\n", patients[patientCount].id);
+    printf("Name       : %s (%d yrs)\n", name, age);
+    printf("Specialty  : %s\n", specialtyNames[specChoice - 1]);
+    printf("Base Fee   : LKR %.2f\n", baseFee);
+    printf("Surcharge  : LKR %.2f\n", surcharge);
+    printf("Total Fee  : LKR %.2f\n", patients[patientCount].totalFee);
+    printf("----------------------------\n");
+
+    patientCount++;
 }
 
 //Display bed status
 void displayBedStatus()
 {
     int i, j;
-    printf("\n=== BED OCCUPANCY STATUS ===\n");
+    printf("\n=== BED STATUS ===\n");
 
     for (i = 0; i < 4; i++)
     {
