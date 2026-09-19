@@ -115,15 +115,39 @@ void displayBedStatus()
         printf("\n");
     }
 }
+
+//Assign Patient to Ward
+void assignWard()
+{
+    int pId, wardChoice, bedNum;
+
+    printf("\n=== ASSIGN WARD ===\n");
+
+    printf("Enter Patient ID: ");
+    scanf("%d", &pId);
+
+    printf("Select Ward (1-General, 2-Paediatric, 3-Surgical, 4-ICU): ");
+    scanf("%d", &wardChoice);
+
+    printf("Enter Bed Number: ");
+    scanf("%d", &bedNum);
+
+    bedOccupancy[wardChoice - 1][bedNum - 1] = 1;
+
+    printf("\nPatient %s assigned to %s, Bed #%d successfully!\n",
+           patient_name[pId - 1], wardNames[wardChoice - 1], bedNum);
+}
+
 void displayMenu()
 {
     printf("\n===== SMART HOSPITAL SYSTEM =====\n");
     printf("1. Register Patient\n");
     printf("2. Display Patients\n");
     printf("3. Bed Status\n");
-    printf("4. Priority Queue\n");
-    printf("5. Reports\n");
-    printf("6. Exit\n");
+    printf("4. Assign Ward\n");
+    printf("5. Priority Queue\n");
+    printf("6. Reports\n");
+    printf("7. Exit\n");
 }
 
 int main()
@@ -152,14 +176,18 @@ int main()
                 break;
 
             case 4:
-                printf("Priority Queue\n");
+                assignWard();
                 break;
 
             case 5:
-                printf("Reports\n");
+                printf("Priority Queue\n");
                 break;
 
             case 6:
+                printf("Reports\n");
+                break;
+
+            case 7:
                 printf("Exiting...\n");
                 break;
 
