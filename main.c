@@ -267,6 +267,38 @@ void generateReport()
     printf("--------------------------------\n");
 }
 
+void searchPatient()
+{
+    int searchId, i, found = 0;
+
+    if (patientCount == 0) {
+        printf("\nNo patients registered yet!\n");
+        return;
+    }
+
+    printf("\n=== SEARCH PATIENT ===\n");
+    printf("Enter Patient ID (Numeric part, e.g. 1): ");
+    scanf("%d", &searchId);
+
+    for (i = 0; i < patientCount; i++) {
+        if (patient_id[i] == searchId) {
+            printf("\n--- PATIENT FOUND ---\n");
+            printf("Patient ID : PAT-%d\n", patient_id[i] + 1000);
+            printf("Name       : %s\n", patient_name[i]);
+            printf("Age        : %d yrs\n", patient_age[i]);
+            printf("Urgency    : Level %d\n", patient_urgency[i]);
+            printf("Total Bill : LKR %.2f\n", patient_fee[i]);
+            printf("----------------------\n");
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("\nPatient with ID %d not found!\n", searchId);
+    }
+}
+
 void displayMenu()
 {
     printf("\n===== SMART HOSPITAL SYSTEM =====\n");
@@ -276,7 +308,8 @@ void displayMenu()
     printf("4. Assign Ward\n");
     printf("5. Priority Queue\n");
     printf("6. Reports\n");
-    printf("7. Exit\n");
+    printf("7. Search Patient\n");
+    printf("8. Exit\n");
 }
 
 int main()
@@ -317,11 +350,16 @@ int main()
                 break;
 
             case 7:
+                searchPatient();
+                break;
+
+            case 8:
                 printf("Exiting...\n");
                 break;
 
             default:
                 printf("Invalid choice!\n");
+                break;
         }
 
     } while(choice != 6);
