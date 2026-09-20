@@ -153,16 +153,42 @@ void assignWard()
 {
     int pId, wardChoice, bedNum;
 
+    if (patientCount == 0)
+    {
+        printf("\nNo patients available to assign!\n");
+        return;
+    }
+
     printf("\n=== ASSIGN WARD ===\n");
 
-    printf("Enter Patient ID: ");
+    printf("Enter Patient ID (Numeric part, e.g. 1): ");
     scanf("%d", &pId);
+
+    // Patient ID Validation
+    while (pId < 1 || pId > patientCount)
+    {
+        printf("Invalid Patient ID! Enter again (1-%d): ", patientCount);
+        scanf("%d", &pId);
+    }
 
     printf("Select Ward (1-General, 2-Paediatric, 3-Surgical, 4-ICU): ");
     scanf("%d", &wardChoice);
 
-    printf("Enter Bed Number: ");
+    while (wardChoice < 1 || wardChoice > 4)
+    {
+        printf("Invalid Ward! Choice must be (1-4): ");
+        scanf("%d", &wardChoice);
+    }
+
+    printf("Enter Bed Number (1-%d): ", wardCapacities[wardChoice - 1]);
     scanf("%d", &bedNum);
+
+    while (bedNum < 1 || bedNum > wardCapacities[wardChoice - 1])
+    {
+        printf("Invalid Bed Number for %s! Enter (1-%d): ",
+               wardNames[wardChoice - 1], wardCapacities[wardChoice - 1]);
+        scanf("%d", &bedNum);
+    }
 
     bedOccupancy[wardChoice - 1][bedNum - 1] = 1;
 
