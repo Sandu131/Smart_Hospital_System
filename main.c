@@ -122,6 +122,8 @@ void displayPatients()
         printf("---------------------------\n");
     }
 }
+
+
 //Display bed status
 void displayBedStatus()
 {
@@ -185,15 +187,19 @@ void assignWard()
 
     while (bedNum < 1 || bedNum > wardCapacities[wardChoice - 1])
     {
-        printf("Invalid Bed Number for %s! Enter (1-%d): ",
-               wardNames[wardChoice - 1], wardCapacities[wardChoice - 1]);
+        printf("Invalid Bed Number for %s! Enter (1-%d): ",wardNames[wardChoice - 1], wardCapacities[wardChoice - 1]);
         scanf("%d", &bedNum);
+    }
+
+    if (bedOccupancy[wardChoice - 1][bedNum - 1] == 1)
+    {
+        printf("\nError: Bed #%d in %s is already occupied!\n", bedNum, wardNames[wardChoice - 1]);
+        return;
     }
 
     bedOccupancy[wardChoice - 1][bedNum - 1] = 1;
 
-    printf("\nPatient %s assigned to %s, Bed #%d successfully!\n",
-           patient_name[pId - 1], wardNames[wardChoice - 1], bedNum);
+    printf("\nPatient %s assigned to %s, Bed #%d successfully!\n",patient_name[pId - 1], wardNames[wardChoice - 1], bedNum);
 }
 
 // Priority Queue
@@ -212,8 +218,7 @@ void showPriorityQueue()
     for (j = 3; j >= 1; j--) {
         for (i = 0; i < patientCount; i++) {
             if (patient_urgency[i] == j) {
-                printf("Priority Level %d | ID: %d | Name: %s | Age: %d\n",
-                       patient_urgency[i], patient_id[i], patient_name[i], patient_age[i]);
+                printf("Priority Level %d | ID: %d | Name: %s | Age: %d\n",patient_urgency[i], patient_id[i], patient_name[i], patient_age[i]);
             }
         }
     }
@@ -280,7 +285,7 @@ int main()
 
     do
     {
-        displayMenu();   // function call BEFORE switch
+        displayMenu();
 
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
