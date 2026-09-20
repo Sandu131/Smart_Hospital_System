@@ -3,6 +3,8 @@
 
 char specialtyNames[4][30] = {"OPD", "Paediatrics", "Cardiology", "Neurology"};
 float baseFees[4] = {1500.00, 2500.00, 4500.00, 5000.00};
+int consultationTimes[4] = {15, 20, 30, 30};
+int specialtyQueue[4] = {0, 0, 0, 0};
 
 char wardNames[4][20] = {"General Ward", "Paediatric Ward", "Surgical Ward", "ICU"};
 float wardRates[4] = {3000.00, 6000.00, 12000.00, 25000.00};
@@ -23,6 +25,8 @@ void registerPatient()
 {
     int specChoice, isAdmitted = 0, wardChoice = 0, days = 0;
     float baseFee, surcharge = 0.0, wardCost = 0.0, grossTotal, discount = 0.0, finalPayable;
+    int waitTime = 0;
+    int currentQueue, timePerPatient;
 
     while (getchar() != '\n');
 
@@ -49,6 +53,12 @@ void registerPatient()
     }
 
     baseFee = baseFees[specChoice - 1];
+
+    currentQueue = specialtyQueue[specChoice - 1];
+    timePerPatient = consultationTimes[specChoice - 1];
+
+    waitTime = currentQueue * timePerPatient;
+    specialtyQueue[specChoice - 1] = currentQueue + 1;
 
     if (patient_urgency[patientCount] == 2) surcharge = baseFee * 0.20;
     if (patient_urgency[patientCount] == 3) surcharge = baseFee * 0.50;
