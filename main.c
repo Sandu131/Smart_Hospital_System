@@ -321,7 +321,15 @@ int main()
         displayMenu();
 
         printf("\nEnter your choice: ");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1)
+        {
+            printf("\nInvalid input! Please enter a number.\n");
+
+            while (getchar() != '\n');
+
+            choice = 0;
+            continue;
+        }
 
         switch(choice)
         {
