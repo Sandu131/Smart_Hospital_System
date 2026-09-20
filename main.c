@@ -194,6 +194,48 @@ void showPriorityQueue()
     printf("----------------------------------------------\n");
 }
 
+//Generate report function
+void generateReport()
+{
+    int i, j;
+    float totalRevenue = 0.0;
+    int criticalCount = 0;
+    int highestIndex = 0;
+    int occupiedBeds = 0;
+
+    if (patientCount == 0) {
+        printf("\nNo data available to generate reports.\n");
+        return;
+    }
+
+    for (i = 0; i < patientCount; i++) {
+        totalRevenue += patient_fee[i];
+
+        if (patient_urgency[i] == 3) {
+            criticalCount++;
+        }
+
+        if (patient_fee[i] > patient_fee[highestIndex]) {
+            highestIndex = i;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < wardCapacities[i]; j++)
+        {
+            occupiedBeds += bedOccupancy[i][j];
+        }
+    }
+
+    printf("\n=== HOSPITAL SUMMARY REPORT ===\n");
+    printf("Total Patients Registered : %d\n", patientCount);
+    printf("Total Critical Patients   : %d\n", criticalCount);
+    printf("Total Revenue Generated   : LKR %.2f\n", totalRevenue);
+    printf("Highest Bill Paid By      : %s (LKR %.2f)\n", patient_name[highestIndex], patient_fee[highestIndex]);
+    printf("Total Beds Occupied       : %d\n", occupiedBeds);
+    printf("--------------------------------\n");
+}
+
 void displayMenu()
 {
     printf("\n===== SMART HOSPITAL SYSTEM =====\n");
@@ -240,7 +282,7 @@ int main()
                 break;
 
             case 6:
-                printf("Reports\n");
+                generateReport();
                 break;
 
             case 7:
